@@ -21,7 +21,7 @@ def getSerialPorts():
     for port in ports:
         try:
             if port.manufacturer:
-                lista.append(port)
+                lista.append(port.device)
             else:
                 continue
                # lista.append("No Manufacturer Listed")
@@ -31,7 +31,7 @@ def getSerialPorts():
             sys.exit(0)
     drop.destroy()
     clicked.set("Choose Serial Port")
-    drop = OptionMenu(root,clicked, *lista.name)
+    drop = OptionMenu(root,clicked, *lista)
     drop.config(width=13,pady=0.1)
     drop.place(relx=0.01,rely=0.01)
 
@@ -47,7 +47,7 @@ def run():
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
-    name_serialport = sr.Serial(serialPort.device,int(selectedPort))  
+    name_serialport = sr.Serial(serialPort,int(selectedPort))  
     if(frequencyChoosen =="30-60kHz" ):
         freq = 1
         d = (1).to_bytes(1,byteorder='big')
@@ -96,12 +96,12 @@ refreshBtn.place(relx=0.63,rely=0.005)
 
 # Connect to serial Port and run function
 connectBtn = Button(root, text="Connect", command=lambda:threading.Thread(target=run).start() )
-connectBtn.config(pady=0.1,width=6)
+connectBtn.config(pady=0.1)
 connectBtn.place(relx=0.85,rely=0.005)
 
 
-closeBtn = Button(root, text="Close", fg='red', command=lambda:threading.Thread(target=close).start() )
-closeBtn.config(pady=0.1,width=6)
+closeBtn = Button(root, text="Close", bd=='blue', fg='white', command=lambda:threading.Thread(target=close).start() )
+closeBtn.config(pady=0.1,)
 closeBtn.place(relx=0.85,rely=0.05)
 
 

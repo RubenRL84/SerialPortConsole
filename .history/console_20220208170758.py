@@ -47,7 +47,7 @@ def run():
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
-    name_serialport = sr.Serial(serialPort.device,int(selectedPort))  
+    name_serialport = sr.Serial(serialPort,int(selectedPort))  
     if(frequencyChoosen =="30-60kHz" ):
         freq = 1
         d = (1).to_bytes(1,byteorder='big')
