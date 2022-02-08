@@ -93,7 +93,7 @@ portFrequency.place(relx=0.26,rely=0.01)
 # Refresh Serial Port Button
 refreshBtn = Button(root, text="Refresh Serial Port", command = getSerialPorts )
 refreshBtn.config(pady=0.1)
-refreshBtn.place(relx=0.65,rely=0.005)
+refreshBtn.place(relx=0.66,rely=0.005)
 
 
 # Connect to serial Port and run function

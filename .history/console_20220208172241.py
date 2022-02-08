@@ -32,7 +32,7 @@ def getSerialPorts():
     drop.destroy()
     clicked.set("Choose Serial Port")
     drop = OptionMenu(root,clicked, *lista)
-    drop.config(width=16,pady=0.1)
+    drop.config(width=13,pady=0.1)
     drop.place(relx=0.01,rely=0.01)
 
 def close():
@@ -69,7 +69,7 @@ lista = ["Click Refresh"]
 clicked = StringVar()
 clicked.set("Choose Serial Port")
 drop = OptionMenu(root,clicked, *lista)
-drop.config(width=16,pady=0.1)
+drop.config(width=13,pady=0.1)
 drop.place(relx=0.01,rely=0.01)
 
 # Drop Down Box 2
@@ -78,7 +78,7 @@ freqClicked = StringVar()
 freqClicked.set("Choose Frequency")
 dropFrequency = OptionMenu(root,freqClicked,*frequencyList)
 dropFrequency.config(width=11,pady=0.1)
-dropFrequency.place(relx=0.46,rely=0.01)
+dropFrequency.place(relx=0.43,rely=0.01)
 
 # Drop Down Box 3
 portlist = ["4800","9600","19200","57600","115200"]
@@ -86,14 +86,14 @@ portClicked = StringVar()
 portClicked.set("Choose Baud Rate")
 portFrequency = OptionMenu(root,portClicked,*portlist)
 portFrequency.config(width=12,pady=0.1)
-portFrequency.place(relx=0.26,rely=0.01)
+portFrequency.place(relx=0.23,rely=0.01)
 
 
 
 # Refresh Serial Port Button
 refreshBtn = Button(root, text="Refresh Serial Port", command = getSerialPorts )
 refreshBtn.config(pady=0.1)
-refreshBtn.place(relx=0.65,rely=0.005)
+refreshBtn.place(relx=0.64,rely=0.005)
 
 
 # Connect to serial Port and run function
