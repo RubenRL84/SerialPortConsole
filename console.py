@@ -4,6 +4,7 @@ import sys
 import serial
 import serial.tools.list_ports
 import serial as sr
+#import numeric
 
 # UI Builder
 root = Tk()
@@ -20,7 +21,7 @@ def getSerialPorts():
     for port in ports:
         try:
             if port.manufacturer:
-                lista.append(port.name)
+                lista.append(port.device)
             else:
                 continue
                # lista.append("No Manufacturer Listed")
@@ -41,15 +42,18 @@ def run():
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
+    name_serialport = sr.Serial(serialPort,int(selectedPort))  
     if(frequencyChoosen =="30-60kHz" ):
-        freq = 0
-        #s_serial.write(freq)
-    else:
         freq = 1
-        #s.serial.write(freq)
+        d = (1).to_bytes(1,byteorder='big')
+        name_serialport.write(d)
+    else:
+        freq = 2
+        d_2 = (2).to_bytes(1,byteorder='big')
+        name_serialport.write(d_2)
 
     # {Function to run here}
-    name_serialport = sr.Serial(serialPort,int(selectedPort))  
+    
     consoleBox.insert(END, serialPort+ ' porta: '+ freqClicked.get()+'\n')
     consoleBox.pack(side=BOTTOM,pady=0.1)
 
@@ -94,10 +98,10 @@ scroll = Scrollbar(root)
 scroll.pack(side=RIGHT, fill=Y)
 
 # Console Viewer
-consoleBox = Text(root,height=50,width=105,yscrollcommand=scroll.set)
-#consoleBox.pack(side=BOTTOM,pady=0.1,fill=X)
-consoleBox.config(padx=0.2,pady=0.2)
-consoleBox.place(rely=0.075)
+consoleBox = Text(root,height=30,yscrollcommand=scroll.set)
+consoleBox.pack(side=BOTTOM,pady=0.1,fill=X)
+#consoleBox.config(padx=0.2,pady=0.2)
+#consoleBox.pack(side="bottom",fill=X)
 
 
 
