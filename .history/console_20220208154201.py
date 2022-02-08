@@ -94,10 +94,10 @@ scroll = Scrollbar(root)
 scroll.pack(side=RIGHT, fill=Y)
 
 # Console Viewer
-consoleBox = Text(root,height=50,width=105,yscrollcommand=scroll.set)
+consoleBox = Text(root,height=35,fill=X,yscrollcommand=scroll.set)
 #consoleBox.pack(side=BOTTOM,pady=0.1,fill=X)
-consoleBox.config(padx=0.2,pady=0.2)
-consoleBox.place(rely=0.075)
+consoleBox.config(padx=0.1,pady=0.1)
+consoleBox.place(rely=0.2)
 
 
 

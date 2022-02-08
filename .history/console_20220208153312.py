@@ -10,6 +10,8 @@ root = Tk()
 root.title("Acoustic Pinger Locator")
 root.geometry("780x560")
 
+frame = Frame(root)
+frame.pack(side=BOTTOM,pady=0.1)
 
 
 # Refresh Serial Ports and show in Option Menu
@@ -30,7 +32,7 @@ def getSerialPorts():
             sys.exit(0)
     drop.destroy()
     clicked.set("Choose Serial Port")
-    drop = OptionMenu(root,clicked, *lista)
+    drop = OptionMenu(root,clicked, *lista,)
     drop.config(width=13,pady=0.1)
     drop.place(relx=0.01,rely=0.01)
     
@@ -57,7 +59,7 @@ def run():
 lista = ["Click Refresh"]
 clicked = StringVar()
 clicked.set("Choose Serial Port")
-drop = OptionMenu(root,clicked, *lista)
+drop = OptionMenu(root,clicked, *lista,)
 drop.config(width=13,pady=0.1)
 drop.place(relx=0.01,rely=0.01)
 
@@ -90,14 +92,12 @@ connectBtn.config(pady=0.1)
 connectBtn.place(relx=0.63,rely=0.005)
 
 # Vertical (y) Scroll Bar
-scroll = Scrollbar(root)
+scroll = Scrollbar(frame)
 scroll.pack(side=RIGHT, fill=Y)
 
 # Console Viewer
-consoleBox = Text(root,height=50,width=105,yscrollcommand=scroll.set)
-#consoleBox.pack(side=BOTTOM,pady=0.1,fill=X)
-consoleBox.config(padx=0.2,pady=0.2)
-consoleBox.place(rely=0.075)
+consoleBox = Text(frame,yscrollcommand=scroll.set)
+consoleBox.pack(side="bottom",fill="both")
 
 
 
