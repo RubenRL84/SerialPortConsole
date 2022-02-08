@@ -33,10 +33,10 @@ def getSerialPorts():
 ## Connect to selected port and frquency and show output on Text Window
 def run():
     global consoleBox
+    # Codigo run aqui
     serialPort = clicked.get()
     frequencyChoosen = freqClicked.get()
-
-    # {Function to run here}
+   
 
     consoleBox.insert(END, clicked.get()+'\n')
     consoleBox.pack(side=BOTTOM,pady=0.1)

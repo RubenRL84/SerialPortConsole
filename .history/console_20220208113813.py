@@ -4,12 +4,11 @@ import sys
 import serial
 import serial.tools.list_ports
 
-# UI Builder
+## UI Builder
 root = Tk()
 root.title("Acoustic Pinger Locator")
 root.geometry("580x360")
 
-# Refresh Serial Ports and show in Option Menu
 def getSerialPorts():
     global drop
     lista= []
@@ -33,10 +32,10 @@ def getSerialPorts():
 ## Connect to selected port and frquency and show output on Text Window
 def run():
     global consoleBox
+    # Codigo run aqui
     serialPort = clicked.get()
     frequencyChoosen = freqClicked.get()
-
-    # {Function to run here}
+   
 
     consoleBox.insert(END, clicked.get()+'\n')
     consoleBox.pack(side=BOTTOM,pady=0.1)
