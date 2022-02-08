@@ -36,14 +36,16 @@ def getSerialPorts():
     drop.place(relx=0.01,rely=0.01)
 
 def close():
-    print("close")
-
-
+    
+    name_serialport.close()
+    consoleBox.insert(END, "Connection Closed" +'\n')
+    consoleBox.pack(side=BOTTOM,pady=0.1)
 
 ## Connect to selected port and frquency and show output on Text Window
 def run():
     global consoleBox
     global serialPort
+    global name_serialport
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
