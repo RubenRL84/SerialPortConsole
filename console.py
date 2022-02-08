@@ -3,11 +3,12 @@ import threading
 import sys
 import serial
 import serial.tools.list_ports
+import serial as sr
 
 # UI Builder
 root = Tk()
 root.title("Acoustic Pinger Locator")
-root.geometry("580x360")
+root.geometry("780x560")
 
 # Refresh Serial Ports and show in Option Menu
 def getSerialPorts():
@@ -19,7 +20,8 @@ def getSerialPorts():
             if port.manufacturer:
                 lista.append(port.name)
             else:
-                lista.append("No Manufacturer Listed")
+                continue
+               # lista.append("No Manufacturer Listed")
                 print(port.device + ': No Manufacturer Listed')
         except AttributeError:
             print("\nThis utility requires that pyserial version 3.4 or greater is installed.")
@@ -27,18 +29,25 @@ def getSerialPorts():
     drop.destroy()
     clicked.set("Choose Serial Port")
     drop = OptionMenu(root,clicked, *lista,)
-    drop.config(width=11,pady=0.1)
+    drop.config(width=13,pady=0.1)
     drop.place(relx=0.01,rely=0.01)
     
 ## Connect to selected port and frquency and show output on Text Window
 def run():
     global consoleBox
+    global serialPort
     serialPort = clicked.get()
     frequencyChoosen = freqClicked.get()
+    if(frequencyChoosen =="30-60kHz" ):
+        freq = 0
+        #s_serial.write(freq)
+    else:
+        freq = 1
+        #s.serial.write(freq)
 
     # {Function to run here}
-
-    consoleBox.insert(END, clicked.get()+'\n')
+    name_serialport = sr.Serial(clicked.get(),int(portClicked.get()))  
+    consoleBox.insert(END, serialPort+ ' porta: '+ freqClicked.get()+'\n')
     consoleBox.pack(side=BOTTOM,pady=0.1)
 
 # Drop Down Box 1
@@ -46,7 +55,7 @@ lista = ["Click Refresh"]
 clicked = StringVar()
 clicked.set("Choose Serial Port")
 drop = OptionMenu(root,clicked, *lista,)
-drop.config(width=11,pady=0.1)
+drop.config(width=13,pady=0.1)
 drop.place(relx=0.01,rely=0.01)
 
 # Drop Down Box 2
@@ -55,22 +64,35 @@ freqClicked = StringVar()
 freqClicked.set("Choose Frequency")
 dropFrequency = OptionMenu(root,freqClicked,*frequencyList)
 dropFrequency.config(width=11,pady=0.1)
-dropFrequency.place(relx=0.45,rely=0.01)
+dropFrequency.place(relx=0.35,rely=0.01)
+
+# Drop Down Box 3
+portlist = ["4800","9600","19200","57600","115200"]
+portClicked = StringVar()
+portClicked.set("Choose Port")
+portFrequency = OptionMenu(root,portClicked,*portlist)
+portFrequency.config(width=8,pady=0.1)
+portFrequency.place(relx=0.58,rely=0.01)
+
+
 
 # Refresh Serial Port Button
 refreshBtn = Button(root, text="Refresh Serial Port", command = getSerialPorts )
-refreshBtn.place(relx=0.7)
+refreshBtn.place(relx=0.75)
 
 # Connect to serial Port and run function
 connectBtn = Button(root, text="Connect", command=lambda:threading.Thread(target=run).start() )
-connectBtn.place(relx=0.28)
+connectBtn.place(relx=0.23)
 
 # Vertical (y) Scroll Bar
 scroll = Scrollbar(root)
 scroll.pack(side=RIGHT, fill=Y)
 
 # Console Viewer
-consoleBox = Text(root,width=80,height=25,yscrollcommand=scroll.set)
+consoleBox = Text(root,width=90,height=35,yscrollcommand=scroll.set)
 consoleBox.pack(side=BOTTOM,pady=0.1)
+
+
+
 
 root.mainloop()
