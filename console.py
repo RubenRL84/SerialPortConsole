@@ -37,6 +37,7 @@ def run():
     global consoleBox
     global serialPort
     serialPort = clicked.get()
+    selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
     if(frequencyChoosen =="30-60kHz" ):
         freq = 0
@@ -46,7 +47,7 @@ def run():
         #s.serial.write(freq)
 
     # {Function to run here}
-    name_serialport = sr.Serial(clicked.get(),int(portClicked.get()))  
+    name_serialport = sr.Serial(serialPort,int(selectedPort))  
     consoleBox.insert(END, serialPort+ ' porta: '+ freqClicked.get()+'\n')
     consoleBox.pack(side=BOTTOM,pady=0.1)
 
@@ -69,10 +70,10 @@ dropFrequency.place(relx=0.35,rely=0.01)
 # Drop Down Box 3
 portlist = ["4800","9600","19200","57600","115200"]
 portClicked = StringVar()
-portClicked.set("Choose Port")
+portClicked.set("Choose Baud Rate")
 portFrequency = OptionMenu(root,portClicked,*portlist)
-portFrequency.config(width=8,pady=0.1)
-portFrequency.place(relx=0.58,rely=0.01)
+portFrequency.config(width=12,pady=0.1)
+portFrequency.place(relx=0.55,rely=0.01)
 
 
 
@@ -82,7 +83,7 @@ refreshBtn.place(relx=0.75)
 
 # Connect to serial Port and run function
 connectBtn = Button(root, text="Connect", command=lambda:threading.Thread(target=run).start() )
-connectBtn.place(relx=0.23)
+connectBtn.place(relx=0.23,rely=0.1)
 
 # Vertical (y) Scroll Bar
 scroll = Scrollbar(root)
