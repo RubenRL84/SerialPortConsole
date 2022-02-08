@@ -17,7 +17,7 @@ def getSerialPorts():
     for port in ports:
         try:
             if port.manufacturer:
-                lista.append(port.name)
+                lista.append(port.deice)
             else:
                 lista.append("No Manufacturer Listed")
                 print(port.device + ': No Manufacturer Listed')
