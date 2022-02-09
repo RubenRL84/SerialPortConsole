@@ -11,7 +11,6 @@ import serial as sr
 root = Tk()
 root.title("Acoustic Pinger Locator")
 root.geometry("780x500")
-root.minsize("780","500")
 
 frame = Frame(root)
 frame.pack(side=BOTTOM,fill=X)

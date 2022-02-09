@@ -11,11 +11,12 @@ import serial as sr
 root = Tk()
 root.title("Acoustic Pinger Locator")
 root.geometry("780x500")
-root.minsize("780","500")
 
 frame = Frame(root)
 frame.pack(side=BOTTOM,fill=X)
 
+frame0 = Frame(root)
+frame0.pack(side=TOP,fill=X)
 
 # Refresh Serial Ports and show in Option Menu
 def getSerialPorts():
@@ -85,7 +86,7 @@ def run():
 lista = ["Click Refresh"]
 clicked = StringVar()
 clicked.set("Choose Serial Port")
-drop = OptionMenu(root,clicked, *lista)
+drop = OptionMenu(frame0,clicked, *lista)
 drop.config(width=16,pady=0.1)
 drop.place(relx=0.01,rely=0.01)
 
@@ -93,7 +94,7 @@ drop.place(relx=0.01,rely=0.01)
 frequencyList = ["30-60kHz", "60-90kHz"]
 freqClicked = StringVar()
 freqClicked.set("Choose Frequency")
-dropFrequency = OptionMenu(root,freqClicked,*frequencyList)
+dropFrequency = OptionMenu(frame0,freqClicked,*frequencyList)
 dropFrequency.config(width=11,pady=0.1)
 dropFrequency.place(relx=0.46,rely=0.01)
 
@@ -101,7 +102,7 @@ dropFrequency.place(relx=0.46,rely=0.01)
 portlist = ["4800","9600","19200","57600","115200"]
 portClicked = StringVar()
 portClicked.set("Choose Baud Rate")
-portFrequency = OptionMenu(root,portClicked,*portlist)
+portFrequency = OptionMenu(frame0,portClicked,*portlist)
 portFrequency.config(width=12,pady=0.1)
 portFrequency.place(relx=0.26,rely=0.01)
 
@@ -109,23 +110,23 @@ def clearConsole():
     consoleBox.delete("1.0",END)
 
 # Refresh Serial Port Button
-refreshBtn = Button(root, text="Refresh Serial Port", command = getSerialPorts )
+refreshBtn = Button(frame0, text="Refresh Serial Port", command = getSerialPorts )
 refreshBtn.config(pady=0.1,width=13)
 refreshBtn.place(relx=0.65,rely=0.005)
 
 # Clear Console Button
-refreshBtn = Button(root, text="Clear Console", command = clearConsole)
+refreshBtn = Button(frame0, text="Clear Console", command = clearConsole)
 refreshBtn.config(pady=0.1,width=13)
 refreshBtn.place(relx=0.65,rely=0.06)
 
 
 # Connect to serial Port and run function
-connectBtn = Button(root, text="Connect", command=lambda:threading.Thread(target=run).start() )
+connectBtn = Button(frame0, text="Connect", command=lambda:threading.Thread(target=run).start() )
 connectBtn.config(pady=0.1,width=6)
 connectBtn.place(relx=0.85,rely=0.005)
 
 # Close Button
-closeBtn = Button(root, text="Close", fg='red', command=lambda:threading.Thread(target=close).start() )
+closeBtn = Button(frame0, text="Close", fg='red', command=lambda:threading.Thread(target=close).start() )
 closeBtn.config(pady=0.1,width=6)
 closeBtn.place(relx=0.85,rely=0.06)
 
