@@ -10,7 +10,7 @@ import serial as sr
 # UI Builder
 root = Tk()
 root.title("Acoustic Pinger Locator")
-root.geometry("780x500")
+root.geometry("780x560")
 
 frame = Frame(root)
 frame.pack(side=BOTTOM,fill=X)
@@ -108,13 +108,13 @@ def clearConsole():
 
 # Refresh Serial Port Button
 refreshBtn = Button(root, text="Refresh Serial Port", command = getSerialPorts )
-refreshBtn.config(pady=0.1,width=13)
+refreshBtn.config(pady=0.1)
 refreshBtn.place(relx=0.65,rely=0.005)
 
 # Clear Console Button
 refreshBtn = Button(root, text="Clear Console", command = clearConsole)
-refreshBtn.config(pady=0.1,width=13)
-refreshBtn.place(relx=0.65,rely=0.06)
+refreshBtn.config(pady=0.1,width=12)
+refreshBtn.place(relx=0.65,rely=0.05)
 
 
 # Connect to serial Port and run function
@@ -125,7 +125,7 @@ connectBtn.place(relx=0.85,rely=0.005)
 # Close Button
 closeBtn = Button(root, text="Close", fg='red', command=lambda:threading.Thread(target=close).start() )
 closeBtn.config(pady=0.1,width=6)
-closeBtn.place(relx=0.85,rely=0.06)
+closeBtn.place(relx=0.85,rely=0.05)
 
 
 
