@@ -23,14 +23,12 @@ def getSerialPorts():
             if port.manufacturer:
                 lista.append(port.device)
             else:
-                continue
+                
                # lista.append("No Manufacturer Listed")
-                print(port.device + ': No Manufacturer Listed')
+                lista.append(port.name + ': No Manufacturer Listed')
         except AttributeError:
             print("\nThis utility requires that pyserial version 3.4 or greater is installed.")
             sys.exit(0)
-    if len(lista) == 0:
-        lista.append("No Device detected")
     drop.destroy()
     clicked.set("Choose Serial Port")
     drop = OptionMenu(root,clicked, *lista)
@@ -51,17 +49,7 @@ def run():
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
-    if serialPort == "Choose Serial Port":
-        consoleBox.insert(END, "Need to choose Serial Port"+'\n')
-        consoleBox.pack(side=BOTTOM,pady=0.1)
-    if selectedPort == "Choose Baud Rate":
-        consoleBox.insert(END, "Need to choose Baud Rate"+'\n')
-        consoleBox.pack(side=BOTTOM,pady=0.1)
-
-    name_serialport = sr.Serial(serialPort,int(selectedPort))
-    if(frequencyChoosen == "Choose Frequency"):
-        consoleBox.insert(END, "Need to choose frequency"+'\n')
-        consoleBox.pack(side=BOTTOM,pady=0.1)
+    name_serialport = sr.Serial(serialPort,int(selectedPort))  
     if(frequencyChoosen =="30-60kHz" ):
         freq = 1
         d = (1).to_bytes(1,byteorder='big')

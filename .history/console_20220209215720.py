@@ -51,17 +51,7 @@ def run():
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
-    if serialPort == "Choose Serial Port":
-        consoleBox.insert(END, "Need to choose Serial Port"+'\n')
-        consoleBox.pack(side=BOTTOM,pady=0.1)
-    if selectedPort == "Choose Baud Rate":
-        consoleBox.insert(END, "Need to choose Baud Rate"+'\n')
-        consoleBox.pack(side=BOTTOM,pady=0.1)
-
-    name_serialport = sr.Serial(serialPort,int(selectedPort))
-    if(frequencyChoosen == "Choose Frequency"):
-        consoleBox.insert(END, "Need to choose frequency"+'\n')
-        consoleBox.pack(side=BOTTOM,pady=0.1)
+    name_serialport = sr.Serial(serialPort,int(selectedPort))  
     if(frequencyChoosen =="30-60kHz" ):
         freq = 1
         d = (1).to_bytes(1,byteorder='big')

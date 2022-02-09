@@ -51,9 +51,6 @@ def run():
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
-    if serialPort == "Choose Serial Port":
-        consoleBox.insert(END, "Need to choose Serial Port"+'\n')
-        consoleBox.pack(side=BOTTOM,pady=0.1)
     if selectedPort == "Choose Baud Rate":
         consoleBox.insert(END, "Need to choose Baud Rate"+'\n')
         consoleBox.pack(side=BOTTOM,pady=0.1)
