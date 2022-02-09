@@ -101,15 +101,14 @@ portFrequency = OptionMenu(root,portClicked,*portlist)
 portFrequency.config(width=12,pady=0.1)
 portFrequency.place(relx=0.26,rely=0.01)
 
-def clearConsole():
-    consoleBox.delete("1.0",END)
+
 
 # Refresh Serial Port Button
 refreshBtn = Button(root, text="Refresh Serial Port", command = getSerialPorts )
 refreshBtn.config(pady=0.1)
 refreshBtn.place(relx=0.65,rely=0.005)
 
-refreshBtn = Button(root, text="Clear Console", command = clearConsole)
+refreshBtn = Button(root, text="Clear Console", command = getSerialPorts )
 refreshBtn.config(pady=0.1,width=12)
 refreshBtn.place(relx=0.65,rely=0.05)
 
