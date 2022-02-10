@@ -97,7 +97,7 @@ def run():
         while(True):
             ADC_temp = name_serialport.read(2)
             ADC_temp = list(ADC_temp)
-            if((ADC_temp[0] > ADC_temp[1]) and first_list == False):
+            if((ADC_temp[0] >= ADC_temp[1]) and first_list == False):
                 first_number = 0
                 second_number = 1
                 first_list = True
@@ -108,7 +108,6 @@ def run():
 
             ADC = new_ADC_numbers(ADC_temp,first_number,second_number)
             graph_numbers = np.append(graph_numbers,ADC)
-            print(graph_numbers)
             consoleBox.insert(END,str(ADC)+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
             
@@ -179,31 +178,31 @@ consoleBox.pack(pady=0.2,fill=X)
 
 # Graphic Section
 def graph():
+    #close()
     plt.rcParams["figure.figsize"] = [7.50, 3.50]
     plt.rcParams["figure.autolayout"] = True
     np.random.seed(0)
 
-    dt = 0.01 # sampling interval
+    dt = 1 # sampling interval
     Fs = 1 / dt # sampling frequency
-    t = np.arange(0, 10, dt)
-
-    # generate noise:
-    nse = np.random.randn(len(t))
-    r = np.exp(-t / 0.05)
-    cnse = np.convolve(nse, r) * dt
-    cnse = cnse[:len(t)]
-    s = 0.1 * np.sin(4 * np.pi * t) + cnse
+    s  = graph_numbers
+    t = np.arange(0, s.size, dt)
     fig, axs = plt.subplots()
     axs.set_title("Signal")
     axs.plot(t, s, color='C0')
     axs.set_xlabel("Time")
     axs.set_ylabel("Amplitude")
-    plt.show()
+    #plt.show()
+    plt.savefig("Teste")
+    plt.clf()
 
 # Graphic Button
 graphBtn = Button(root, text="Create Graphic", command=graph)
 graphBtn.config(width=12,pady=0.1)
 graphBtn.place(relx=0.46,rely=0.06)
+
+getSerialPorts()
+
 
 # Starts UI
 root.mainloop()
