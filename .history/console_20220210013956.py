@@ -13,7 +13,6 @@ root.title("Acoustic Pinger Locator")
 root.geometry("780x500")
 root.minsize("780","500")
 
-# Frame for Text Window
 frame = Frame(root)
 frame.config(padx=0.1)
 frame.pack(side=BOTTOM,fill=X)
@@ -23,7 +22,6 @@ def getSerialPorts():
     global drop
     lista= []
     ports = serial.tools.list_ports.comports()
-
     for port in ports:
         try:
             if port.manufacturer:
@@ -45,7 +43,7 @@ def getSerialPorts():
 
 # Close connection of serial port
 def close():
-
+    
     name_serialport.close()
     consoleBox.insert(END, "Connection Closed" +'\n')
     consoleBox.pack(side=BOTTOM,pady=0.1)
@@ -58,12 +56,10 @@ def run():
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
-
     try:
         if serialPort == "Choose Serial Port":
             consoleBox.insert(END, "Need to choose Serial Port"+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
-
         if selectedPort == "Choose Baud Rate":
             consoleBox.insert(END, "Need to choose Baud Rate"+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)          
@@ -80,7 +76,7 @@ def run():
             d_2 = (2).to_bytes(1,byteorder='big')
             name_serialport.write(d_2)
     except ValueError:
-        print(ValueError+ "Missing selecting something")
+        print(ValueError)
         
         consoleBox.insert(END, serialPort+ ' porta: '+ freqClicked.get()+'\n')
         consoleBox.pack(side=BOTTOM,pady=0.1)
@@ -144,10 +140,12 @@ consoleLabel.pack(fill=X)
 consoleBox = Text(frame,height=30,yscrollcommand=scroll.set)
 consoleBox.pack(pady=0.2,fill=X)
 
+
 # Graphic Section
 def graph():
     plt.rcParams["figure.figsize"] = [7.50, 3.50]
     plt.rcParams["figure.autolayout"] = True
+
     np.random.seed(0)
 
     dt = 0.01 # sampling interval
@@ -165,12 +163,11 @@ def graph():
     axs.plot(t, s, color='C0')
     axs.set_xlabel("Time")
     axs.set_ylabel("Amplitude")
+    
     plt.show()
-
 # Graphic Button
 graphBtn = Button(root, text="Create Graphic", command=graph)
 graphBtn.config(width=12,pady=0.1)
 graphBtn.place(relx=0.46,rely=0.06)
 
-# Starts UI
 root.mainloop()

@@ -148,6 +148,7 @@ consoleBox.pack(pady=0.2,fill=X)
 def graph():
     plt.rcParams["figure.figsize"] = [7.50, 3.50]
     plt.rcParams["figure.autolayout"] = True
+
     np.random.seed(0)
 
     dt = 0.01 # sampling interval
@@ -165,12 +166,11 @@ def graph():
     axs.plot(t, s, color='C0')
     axs.set_xlabel("Time")
     axs.set_ylabel("Amplitude")
+    
     plt.show()
-
 # Graphic Button
 graphBtn = Button(root, text="Create Graphic", command=graph)
 graphBtn.config(width=12,pady=0.1)
 graphBtn.place(relx=0.46,rely=0.06)
 
-# Starts UI
 root.mainloop()

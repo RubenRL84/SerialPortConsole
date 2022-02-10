@@ -171,6 +171,5 @@ def graph():
 graphBtn = Button(root, text="Create Graphic", command=graph)
 graphBtn.config(width=12,pady=0.1)
 graphBtn.place(relx=0.46,rely=0.06)
-
 # Starts UI
 root.mainloop()
