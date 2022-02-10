@@ -6,6 +6,7 @@ import serial.tools.list_ports
 import serial as sr
 import numpy as np
 import matplotlib.pyplot as plt
+from time import sleep
 
 # UI Builder
 root = Tk()
@@ -21,7 +22,7 @@ frame.pack(side=BOTTOM,fill=X)
 def new_ADC_numbers (list_array,first_number,second_number):# função para tratar novos valores lidos
     number_low = list_array[first_number] # guarda os valores de menos significativos da leitura
     number_high = list_array[second_number] # guarda os valores de mais significativos da leitura
-    number= ((number_high << 8) | number_low)   # concatena os valores numa só variavel
+    number = ((number_high << 8) | number_low)   # concatena os valores numa só variavel 
     return number
 
 # Refresh Serial Ports and show in Option Menu
@@ -61,6 +62,9 @@ def run():
     global consoleBox
     global serialPort
     global name_serialport
+    global graph_numbers
+    first_list = False
+    graph_numbers = np.array([])
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
@@ -93,7 +97,18 @@ def run():
         while(True):
             ADC_temp = name_serialport.read(2)
             ADC_temp = list(ADC_temp)
-            ADC = new_ADC_numbers(ADC_temp,0,1)
+            if((ADC_temp[0] > ADC_temp[1]) and first_list == False):
+                first_number = 0
+                second_number = 1
+                first_list = True
+            elif((ADC_temp[0] < ADC_temp[1]) and first_list == False):
+                first_number = 1
+                second_number = 0
+                first_list = True
+
+            ADC = new_ADC_numbers(ADC_temp,first_number,second_number)
+            graph_numbers = np.append(graph_numbers,ADC)
+            print(graph_numbers)
             consoleBox.insert(END,str(ADC)+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
             
