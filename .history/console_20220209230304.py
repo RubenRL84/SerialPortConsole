@@ -15,6 +15,7 @@ root.minsize("780","500")
 frame = Frame(root)
 frame.pack(side=BOTTOM,fill=X)
 
+
 # Refresh Serial Ports and show in Option Menu
 def getSerialPorts():
     global drop
@@ -59,13 +60,13 @@ def run():
             consoleBox.pack(side=BOTTOM,pady=0.1)
         if selectedPort == "Choose Baud Rate":
             consoleBox.insert(END, "Need to choose Baud Rate"+'\n')
-            consoleBox.pack(side=BOTTOM,pady=0.1)          
+            consoleBox.pack(side=BOTTOM,pady=0.1)
+            
             name_serialport = sr.Serial(serialPort,int(selectedPort))
-
         if(frequencyChoosen == "Choose Frequency"):
             consoleBox.insert(END, "Need to choose frequency"+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
-            
+
         if(frequencyChoosen =="30-60kHz" ):
             d = (1).to_bytes(1,byteorder='big')
             name_serialport.write(d)
@@ -74,6 +75,7 @@ def run():
             name_serialport.write(d_2)
     except ValueError:
         print(ValueError)
+        # {Function to run here}
         
         consoleBox.insert(END, serialPort+ ' porta: '+ freqClicked.get()+'\n')
         consoleBox.pack(side=BOTTOM,pady=0.1)
@@ -115,6 +117,7 @@ refreshBtn = Button(root, text="Clear Console", command = clearConsole)
 refreshBtn.config(pady=0.1,width=13)
 refreshBtn.place(relx=0.65,rely=0.06)
 
+
 # Connect to serial Port and run function
 connectBtn = Button(root, text="Connect", command=lambda:threading.Thread(target=run).start() )
 connectBtn.config(pady=0.1,width=6)
@@ -124,6 +127,8 @@ connectBtn.place(relx=0.85,rely=0.005)
 closeBtn = Button(root, text="Close", fg='red', command=lambda:threading.Thread(target=close).start() )
 closeBtn.config(pady=0.1,width=6)
 closeBtn.place(relx=0.85,rely=0.06)
+
+
 
 # Vertical (y) Scroll Bar
 scroll = Scrollbar(frame)
@@ -135,5 +140,10 @@ consoleLabel.pack(fill=X)
 # Console Viewer
 consoleBox = Text(frame,height=30,yscrollcommand=scroll.set)
 consoleBox.pack(pady=0.1,fill=X)
+#consoleBox.config(padx=0.2,pady=0.2)
+#consoleBox.pack(side="bottom",fill=X)
+
+
+
 
 root.mainloop()

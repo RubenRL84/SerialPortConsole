@@ -59,13 +59,13 @@ def run():
             consoleBox.pack(side=BOTTOM,pady=0.1)
         if selectedPort == "Choose Baud Rate":
             consoleBox.insert(END, "Need to choose Baud Rate"+'\n')
-            consoleBox.pack(side=BOTTOM,pady=0.1)          
+            consoleBox.pack(side=BOTTOM,pady=0.1)
+            
             name_serialport = sr.Serial(serialPort,int(selectedPort))
-
         if(frequencyChoosen == "Choose Frequency"):
             consoleBox.insert(END, "Need to choose frequency"+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
-            
+
         if(frequencyChoosen =="30-60kHz" ):
             d = (1).to_bytes(1,byteorder='big')
             name_serialport.write(d)
@@ -74,6 +74,7 @@ def run():
             name_serialport.write(d_2)
     except ValueError:
         print(ValueError)
+        # {Function to run here}
         
         consoleBox.insert(END, serialPort+ ' porta: '+ freqClicked.get()+'\n')
         consoleBox.pack(side=BOTTOM,pady=0.1)
@@ -135,5 +136,8 @@ consoleLabel.pack(fill=X)
 # Console Viewer
 consoleBox = Text(frame,height=30,yscrollcommand=scroll.set)
 consoleBox.pack(pady=0.1,fill=X)
+#consoleBox.config(padx=0.2,pady=0.2)
+#consoleBox.pack(side="bottom",fill=X)
+
 
 root.mainloop()
