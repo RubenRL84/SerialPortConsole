@@ -18,6 +18,12 @@ frame = Frame(root)
 frame.config(padx=0.1)
 frame.pack(side=BOTTOM,fill=X)
 
+def new_ADC_numbers (list_array,first_number,second_number):# função para tratar novos valores lidos
+    number_low = list_array[first_number] # guarda os valores de menos significativos da leitura
+    number_high = list_array[second_number] # guarda os valores de mais significativos da leitura
+    number= ((number_high << 8) | number_low)   # concatena os valores numa só variavel
+    return number
+
 # Refresh Serial Ports and show in Option Menu
 def getSerialPorts():
     global drop
@@ -60,6 +66,7 @@ def run():
     frequencyChoosen = freqClicked.get()
 
     try:
+        name_serialport = sr.Serial(serialPort,int(selectedPort))
         if serialPort == "Choose Serial Port":
             consoleBox.insert(END, "Need to choose Serial Port"+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
@@ -79,11 +86,22 @@ def run():
         else:
             d_2 = (2).to_bytes(1,byteorder='big')
             name_serialport.write(d_2)
+        name_serialport = sr.Serial(serialPort,int(selectedPort))
+        consoleBox.insert("1.0", serialPort+ ' porta: '+ freqClicked.get()+'\n')
+        consoleBox.pack(side=BOTTOM,pady=0.1)
+        
+        while(True):
+            ADC_temp = name_serialport.read(2)
+            ADC_temp = list(ADC_temp)
+            ADC = new_ADC_numbers(ADC_temp,0,1)
+            consoleBox.insert(END,str(ADC)+'\n')
+            consoleBox.pack(side=BOTTOM,pady=0.1)
+            
+
     except ValueError:
         print(ValueError+ "Missing selecting something")
         
-        consoleBox.insert(END, serialPort+ ' porta: '+ freqClicked.get()+'\n')
-        consoleBox.pack(side=BOTTOM,pady=0.1)
+        
 
 # Drop Down Box of Serial Ports
 lista = ["Click Refresh"]
