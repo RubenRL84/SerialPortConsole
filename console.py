@@ -52,7 +52,7 @@ def getSerialPorts():
 
 # Close connection of serial port
 def close():
-
+    file.close()
     name_serialport.close()
     consoleBox.insert(END, "Connection Closed" +'\n')
     consoleBox.pack(side=BOTTOM,pady=0.1)
@@ -63,11 +63,13 @@ def run():
     global serialPort
     global name_serialport
     global graph_numbers
+    global file
     first_list = False
     graph_numbers = np.array([])
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
+    file = open("Log.txt", "w+")
 
     try:
         name_serialport = sr.Serial(serialPort,int(selectedPort))
@@ -107,6 +109,7 @@ def run():
                 first_list = True
 
             ADC = new_ADC_numbers(ADC_temp,first_number,second_number)
+            file.write(str(ADC)+'\n')
             graph_numbers = np.append(graph_numbers,ADC)
             consoleBox.insert(END,str(ADC)+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
