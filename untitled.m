@@ -15,7 +15,7 @@ x(1,:) = []
 
 %y(1:8000,:) = []
 
-f = 200e3/2*linspace(-1, 1, length(y));
+f = 120e3/2*linspace(-1, 1, length(y));
 
 figure(1)
 plot(x,y)

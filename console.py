@@ -193,7 +193,7 @@ def graph():
 
 
     N = graph_numbers # Samples
-    T = 200000/2 # Frequency sample
+    T = 100000/2 # Frequency sample
 
     x = T * np.linspace(-1,1, N.size, endpoint=False)
     #y = np.exp(30.0 * 1.j * 2.0*np.pi*N)
