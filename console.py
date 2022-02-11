@@ -146,7 +146,7 @@ dropFrequency.config(width=11,pady=0.1)
 dropFrequency.place(relx=0.46,rely=0.01)
 
 # Drop Down Box of Baud Rate
-portlist = ["4800","9600","19200","57600","115200"]
+portlist = ["4800","9600","19200","57600","115200","230400","576000"]
 portClicked = StringVar()
 portClicked.set("Choose Baud Rate")
 portFrequency = OptionMenu(root,portClicked,*portlist)
@@ -193,7 +193,7 @@ def graph():
 
 
     N = graph_numbers # Samples
-    T = 60000/2 # Frequency sample
+    T = 200000/2 # Frequency sample
 
     x = T * np.linspace(-1,1, N.size, endpoint=False)
     #y = np.exp(30.0 * 1.j * 2.0*np.pi*N)

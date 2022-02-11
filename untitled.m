@@ -6,7 +6,7 @@ x= []
 
 
 
-for v =0.0:+1.0:7584
+for v =0.0:+1.0:length(y)
   
    x = [x, v]; 
 end
@@ -15,7 +15,7 @@ x(1,:) = []
 
 %y(1:8000,:) = []
 
-f = 60e3/2*linspace(-1, 1, length(y));
+f = 200e3/2*linspace(-1, 1, length(y));
 
 figure(1)
 plot(x,y)
