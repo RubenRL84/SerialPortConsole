@@ -52,6 +52,7 @@ def getSerialPorts():
 
 # Close connection of serial port
 def close():
+
     file.close()
     name_serialport.close()
     consoleBox.insert(END, "Connection Closed" +'\n')
@@ -85,7 +86,7 @@ def run():
         if(frequencyChoosen == "Choose Frequency"):
             consoleBox.insert(END, "Need to choose frequency"+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
-            
+
         if(frequencyChoosen =="30-60kHz" ):
             d = (1).to_bytes(1,byteorder='big')
             name_serialport.write(d)
@@ -109,8 +110,8 @@ def run():
                 first_list = True
 
             ADC = new_ADC_numbers(ADC_temp,first_number,second_number)
-            file.write(str(ADC)+'\n')
             graph_numbers = np.append(graph_numbers,ADC)
+            file.write(str(ADC)+'\n')
             consoleBox.insert(END,str(ADC)+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
             
@@ -186,7 +187,7 @@ def graph():
     plt.rcParams["figure.autolayout"] = True
     np.random.seed(0)
 
-    dt = 1 # sampling interval
+    dt = 512 # sampling interval
     Fs = 1 / dt # sampling frequency
     s  = graph_numbers
     t = np.arange(0, s.size, dt)
@@ -195,6 +196,7 @@ def graph():
     axs.plot(t, s, color='C0')
     axs.set_xlabel("Time")
     axs.set_ylabel("Amplitude")
+    #plt.switch_backend('agg')
     #plt.show()
     plt.savefig("Teste")
     plt.clf()
