@@ -6,7 +6,14 @@ import serial.tools.list_ports
 import serial as sr
 import numpy as np
 import matplotlib.pyplot as plt
+import pygame
 from time import sleep
+from scipy.fft import fft, fftfreq
+
+def play():
+    pygame.init()
+    pygame.mixer.music.load("ping.wav")
+    pygame.mixer.music.play(loops = 0)
 
 # UI Builder
 root = Tk()
@@ -30,7 +37,7 @@ def getSerialPorts():
     global drop
     lista= []
     ports = serial.tools.list_ports.comports()
-
+    
     for port in ports:
         try:
             if port.manufacturer:
@@ -53,6 +60,7 @@ def getSerialPorts():
 # Close connection of serial port
 def close():
 
+    graph_numbers = np.array([])
     file.close()
     name_serialport.close()
     consoleBox.insert(END, "Connection Closed" +'\n')
@@ -71,7 +79,7 @@ def run():
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
     file = open("Log.txt", "w+")
-
+    play()
     try:
         name_serialport = sr.Serial(serialPort,int(selectedPort))
         if serialPort == "Choose Serial Port":
@@ -182,6 +190,16 @@ consoleBox.pack(pady=0.2,fill=X)
 
 # Graphic Section
 def graph():
+
+
+    N = graph_numbers # Samples
+    T = 60000/2 # Frequency sample
+
+    x = T * np.linspace(-1,1, N.size, endpoint=False)
+    #y = np.exp(30.0 * 1.j * 2.0*np.pi*N)
+    yf = fft(N)
+   # xf = fftfreq(N, T)
+
     #close()
     plt.rcParams["figure.figsize"] = [7.50, 3.50]
     plt.rcParams["figure.autolayout"] = True
@@ -193,7 +211,7 @@ def graph():
     t = np.arange(0, s.size, dt)
     fig, axs = plt.subplots()
     axs.set_title("Signal")
-    axs.plot(t, s, color='C0')
+    axs.plot(x, abs(yf), color='C0')
     axs.set_xlabel("Time")
     axs.set_ylabel("Amplitude")
     #plt.switch_backend('agg')
