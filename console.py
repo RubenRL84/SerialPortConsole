@@ -199,9 +199,9 @@ frequencyText.place(relx=0.185,rely=0.065)
 # Graphic Section
 def graph():
 
-
+    Frequency_Sampling = frequencyText.get()
     N = graph_numbers # Samples
-    T = 100000/2 # Frequency sample
+    T = Frequency_Sampling/2 # Frequency sample
 
     x = T * np.linspace(-1,1, N.size, endpoint=False)
     #y = np.exp(30.0 * 1.j * 2.0*np.pi*N)
