@@ -193,8 +193,8 @@ frequencyLabel =Label(root, text="Frequency sample: ")
 frequencyLabel.config(width=16,pady=0.1)
 frequencyLabel.place(relx=0.01,rely=0.063)
 
-frequencyText = Text(root,width=5,height=1.4)
-frequencyText.place(relx=0.175,rely=0.065)
+frequencyText = Text(root,width=8,height=1.4)
+frequencyText.place(relx=0.185,rely=0.065)
 
 # Graphic Section
 def graph():
