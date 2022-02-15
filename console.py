@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import pygame
 from time import sleep
 from scipy.fft import fft, fftfreq
+from scipy.signal import find_peaks
 
 def play():
     pygame.init()
@@ -31,6 +32,7 @@ def new_ADC_numbers (list_array,first_number,second_number):# função para trat
     number_high = list_array[second_number] # guarda os valores de mais significativos da leitura
     number = ((number_high << 8) | number_low)   # concatena os valores numa só variavel 
     return number
+
 
 # Refresh Serial Ports and show in Option Menu
 def getSerialPorts():
@@ -199,15 +201,21 @@ frequencyText.place(relx=0.185,rely=0.065)
 # Graphic Section
 def graph():
 
-    Frequency_Sampling = frequencyText.get()
+    Frequency_Sampling = frequencyText.get(1.0,END)
     N = graph_numbers # Samples
-    T = Frequency_Sampling/2 # Frequency sample
+    T = int(Frequency_Sampling)/2 # Frequency sample
 
     x = T * np.linspace(-1,1, N.size, endpoint=False)
     #y = np.exp(30.0 * 1.j * 2.0*np.pi*N)
     yf = fft(N)
+    points = find_peaks(yf, height = 1e06)
+    print(points)
+    if(points != 0):
+        play()
    # xf = fftfreq(N, T)
-
+    #print(abs(yf))
+    #if(any(yf) > 70000 and any(yf) < 80000):
+    #    play()
     #close()
     plt.rcParams["figure.figsize"] = [7.50, 3.50]
     plt.rcParams["figure.autolayout"] = True

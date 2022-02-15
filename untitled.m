@@ -1,7 +1,7 @@
 
 y = load('Log.txt');
 
-
+%T_old = y
 x= []
 
 
@@ -15,18 +15,24 @@ x(1,:) = []
 
 %y(1:8000,:) = []
 
-f = 120e3/2*linspace(-1, 1, length(y));
+l = abs(fft(y))
+l(1,:) = []
+f = 170e3/2*linspace(-1, 1, length(l));
+
+
+%x(1,:) =[]
+
 
 figure(1)
 plot(x,y)
 
 figure(2)
-plot(f,abs(fft(y)))
+plot(f,l)
 
-
+k = abs(fft(y))
 %y = exp(-1j*2*pi*f.*X);
 figure(3)
-z = exp(-1j*2*pi*60e3.*y)
+z = exp(-1j*2*pi*200e3.*y)
 plot(abs(fft(z)));
 
 
