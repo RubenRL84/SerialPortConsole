@@ -11,6 +11,8 @@ from time import sleep
 from scipy.fft import fft, fftfreq
 from scipy.signal import find_peaks
 
+global count
+
 def play():
     pygame.init()
     pygame.mixer.music.load("ping.wav")
@@ -75,13 +77,16 @@ def run():
     global name_serialport
     global graph_numbers
     global file
+    global live_numbers
+    
+    count = 0
     first_list = False
     graph_numbers = np.array([])
+    live_numbers = np.array([])
     serialPort = clicked.get()
     selectedPort = portClicked.get()
     frequencyChoosen = freqClicked.get()
     file = open("Log.txt", "w+")
-    play()
     try:
         name_serialport = sr.Serial(serialPort,int(selectedPort))
         if serialPort == "Choose Serial Port":
@@ -119,8 +124,31 @@ def run():
                 second_number = 0
                 first_list = True
 
+            
             ADC = new_ADC_numbers(ADC_temp,first_number,second_number)
             graph_numbers = np.append(graph_numbers,ADC)
+            live_numbers = np.append(live_numbers,ADC)
+            if (live_numbers.size == 5000):
+                N = live_numbers
+                Frequency_Sampling = frequencyText.get(1.0,END)
+                T = int(Frequency_Sampling)/2 # Frequency sample
+                x = T * np.linspace(-1,1, N.size, endpoint=False)
+                y = abs(fft(N))
+                y = np.delete(y,0)
+                x = np.delete(x,0)
+                #print(y)
+                for index, item in enumerate(x):
+                    #print(item)
+                    if(item > 72000.0): #and item < 74000):
+                        #print(y[index])
+                        if(y[index] > 50000.0):
+                            play()
+                            #print(y[index])
+                live_numbers = np.delete(live_numbers,np.s_[0::5000])
+                
+                #count += 1
+                #threading.Thread(target=beep(live_numbers)).start()
+                #live_numbers = np.array([])
             file.write(str(ADC)+'\n')
             consoleBox.insert(END,str(ADC)+'\n')
             consoleBox.pack(side=BOTTOM,pady=0.1)
@@ -148,7 +176,7 @@ dropFrequency.config(width=11,pady=0.1)
 dropFrequency.place(relx=0.46,rely=0.01)
 
 # Drop Down Box of Baud Rate
-portlist = ["4800","9600","19200","57600","115200","230400","576000"]
+portlist = ["4800","9600","19200","57600","115200","230400","576000","921600"]
 portClicked = StringVar()
 portClicked.set("Choose Baud Rate")
 portFrequency = OptionMenu(root,portClicked,*portlist)
@@ -206,25 +234,21 @@ def graph():
     T = int(Frequency_Sampling)/2 # Frequency sample
 
     x = T * np.linspace(-1,1, N.size, endpoint=False)
-    #y = np.exp(30.0 * 1.j * 2.0*np.pi*N)
+   
     yf = fft(N)
-    points = find_peaks(yf, height = 1e06)
-    print(points)
-    if(points != 0):
-        play()
-   # xf = fftfreq(N, T)
-    #print(abs(yf))
-    #if(any(yf) > 70000 and any(yf) < 80000):
-    #    play()
-    #close()
+    
+    yf = np.delete(yf,0)
+    x = np.delete(x,0)
+    #del yf[0]
+    #del x[0]
+
     plt.rcParams["figure.figsize"] = [7.50, 3.50]
     plt.rcParams["figure.autolayout"] = True
     np.random.seed(0)
 
-    dt = 512 # sampling interval
-    Fs = 1 / dt # sampling frequency
+
     s  = graph_numbers
-    t = np.arange(0, s.size, dt)
+    #t = np.arange(0, s.size, dt)
     fig, axs = plt.subplots()
     axs.set_title("Signal")
     axs.plot(x, abs(yf), color='C0')
@@ -243,5 +267,24 @@ graphBtn.place(relx=0.46,rely=0.06)
 getSerialPorts()
 
 
+def beep(graph_numbers):
+
+    
+    N = graph_numbers
+    Frequency_Sampling = frequencyText.get(1.0,END)
+    T = int(Frequency_Sampling)/2 # Frequency sample
+    x = T * np.linspace(-1,1, N.size, endpoint=False)
+    y = fft(N)
+
+    for index, item in enumerate(x):
+        if(item > 72000 and item < 74000):
+            if(y[index] > 60000):
+                play()
+                
+                live_numbers = np.empty(300)
+                #print(count)
+    
+
+    
 # Starts UI
 root.mainloop()

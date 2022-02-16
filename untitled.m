@@ -32,7 +32,7 @@ plot(f,l)
 k = abs(fft(y))
 %y = exp(-1j*2*pi*f.*X);
 figure(3)
-z = exp(-1j*2*pi*200e3.*y)
+z = exp(-1j*2*pi*170e3.*y)
 plot(abs(fft(z)));
 
 
