@@ -1,3 +1,4 @@
+from ast import Not
 from hashlib import new
 from tkinter import *
 import threading
@@ -19,6 +20,7 @@ from scipy import signal
 
 global count
 global live_numbers
+
 
 def play():
     pygame.init()
@@ -126,49 +128,68 @@ def run():
     global consoleBox
     global graph_numbers
     global new_name_serialport
+    global new_graph
     #count = 0
     first_list = False
     graph_numbers = np.array([])
     live_numbers = np.array([])
+    new_graph = np.array([])
     new_name_serialport = start()
 
+    global first_number
+    global second_number
+
+    first_number = 0
+    second_number = 1
 
     while(True):
-        if(len(graph_numbers) == 1025):
+        if(len(graph_numbers) == 4096):
             new_name_serialport.close()
             new_name_serialport = sr.Serial(serialPort,int(selectedPort))
             graph_numbers = np.array([])
             live_numbers = np.array([])
+            new_graph = np.array([])
+            first_list = not first_list
 
         ADC_temp = new_name_serialport.read(2)
         ADC_temp = list(ADC_temp)
-        if((ADC_temp[0] >= ADC_temp[1]) and first_list == False):
+   
+        # if((ADC_temp[0] >= ADC_temp[1]) and first_list == False):
+        #     first_number = 0
+        #     second_number = 1
+        #     first_list = True
+        # elif((ADC_temp[0] <= ADC_temp[1]) and first_list == False):
+        #     first_number = 1
+        #     second_number = 0
+        #     first_list = True
+        ADC = new_ADC_numbers(ADC_temp,first_number,second_number)
+        if(ADC > 4095): 
+            first_number = 1
+            second_number = 0
+            ADC = new_ADC_numbers(ADC_temp,first_number,second_number)
+        elif(ADC <= 4095) and first_list == False:
             first_number = 0
             second_number = 1
             first_list = True
-        elif((ADC_temp[0] < ADC_temp[1]) and first_list == False):
-            first_number = 1
-            second_number = 0
-            first_list = True
-        ADC = new_ADC_numbers(ADC_temp,first_number,second_number)
         
         graph_numbers = np.append(graph_numbers,ADC)
         live_numbers = np.append(live_numbers,ADC)
+        new_graph = np.append(new_graph,ADC)
         if (live_numbers.size == 1024):
 
                         #Filtro FIR passa baixa
             #------------------------------------------------
             # Create a FIR filter and apply it to x.
             #------------------------------------------------
-            taps = np.array([-0.0071865,-0.019077,-0.0074447,0.0089641,-0.0028051,-0.0027272,0.0048902,-0.0039446,0.0013541,0.0013399,-0.0030411,0.0033026,-0.0022575,0.00044031,0.0014321,-0.0027164,0.0029824,-0.0021776,0.00057958,0.0012581,-0.0027057,0.0032394,-0.0026329,0.0010425,0.0010274,-0.0028611,0.0037785,-0.003383,0.0017262,0.00068386,-0.0030355,0.0044666,-0.0043844,0.0026915,0.00012838,-0.0031431,0.0052648,-0.0056413,0.0039911,-0.00073871,-0.0030758,0.0061169,-0.007197,0.0057389,-0.0020447,-0.0027422,0.0069819,-0.0090855,0.0080752,-0.0040037,-0.0019582,0.0078273,-0.01145,0.011273,-0.0069349,-0.00046311,0.0085931,-0.014561,0.015912,-0.011549,0.0022754,0.0092402,-0.019123,0.023464,-0.019713,0.0077424,0.0097362,-0.02752,0.039161,-0.03863,0.022286,0.010049,-0.054384,0.10337,-0.14779,0.17875,0.81014,0.17875,-0.14779,0.10337,-0.054384,0.010049,0.022286,-0.03863,0.039161,-0.02752,0.0097362,0.0077424,-0.019713,0.023464,-0.019123,0.0092402,0.0022754,-0.011549,0.015912,-0.014561,0.0085931,-0.00046311,-0.0069349,0.011273,-0.01145,0.0078273,-0.0019582,-0.0040037,0.0080752,-0.0090855,0.0069819,-0.0027422,-0.0020447,0.0057389,-0.007197,0.0061169,-0.0030758,-0.00073871,0.0039911,-0.0056413,0.0052648,-0.0031431,0.00012838,0.0026915,-0.0043844,0.0044666,-0.0030355,0.00068386,0.0017262,-0.003383,0.0037785,-0.0028611,0.0010274,0.0010425,-0.0026329,0.0032394,-0.0027057,0.0012581,0.00057958,-0.0021776,0.0029824,-0.0027164,0.0014321,0.00044031,-0.0022575,0.0033026,-0.0030411,0.0013399,0.0013541,-0.0039446,0.0048902,-0.0027272,-0.0028051,0.0089641,-0.0074447,-0.019077,-0.0071865])
+            #taps = np.array([-0.0071865,-0.019077,-0.0074447,0.0089641,-0.0028051,-0.0027272,0.0048902,-0.0039446,0.0013541,0.0013399,-0.0030411,0.0033026,-0.0022575,0.00044031,0.0014321,-0.0027164,0.0029824,-0.0021776,0.00057958,0.0012581,-0.0027057,0.0032394,-0.0026329,0.0010425,0.0010274,-0.0028611,0.0037785,-0.003383,0.0017262,0.00068386,-0.0030355,0.0044666,-0.0043844,0.0026915,0.00012838,-0.0031431,0.0052648,-0.0056413,0.0039911,-0.00073871,-0.0030758,0.0061169,-0.007197,0.0057389,-0.0020447,-0.0027422,0.0069819,-0.0090855,0.0080752,-0.0040037,-0.0019582,0.0078273,-0.01145,0.011273,-0.0069349,-0.00046311,0.0085931,-0.014561,0.015912,-0.011549,0.0022754,0.0092402,-0.019123,0.023464,-0.019713,0.0077424,0.0097362,-0.02752,0.039161,-0.03863,0.022286,0.010049,-0.054384,0.10337,-0.14779,0.17875,0.81014,0.17875,-0.14779,0.10337,-0.054384,0.010049,0.022286,-0.03863,0.039161,-0.02752,0.0097362,0.0077424,-0.019713,0.023464,-0.019123,0.0092402,0.0022754,-0.011549,0.015912,-0.014561,0.0085931,-0.00046311,-0.0069349,0.011273,-0.01145,0.0078273,-0.0019582,-0.0040037,0.0080752,-0.0090855,0.0069819,-0.0027422,-0.0020447,0.0057389,-0.007197,0.0061169,-0.0030758,-0.00073871,0.0039911,-0.0056413,0.0052648,-0.0031431,0.00012838,0.0026915,-0.0043844,0.0044666,-0.0030355,0.00068386,0.0017262,-0.003383,0.0037785,-0.0028611,0.0010274,0.0010425,-0.0026329,0.0032394,-0.0027057,0.0012581,0.00057958,-0.0021776,0.0029824,-0.0027164,0.0014321,0.00044031,-0.0022575,0.0033026,-0.0030411,0.0013399,0.0013541,-0.0039446,0.0048902,-0.0027272,-0.0028051,0.0089641,-0.0074447,-0.019077,-0.0071865])
 
             # Use firwin with a Kaiser window to create a lowpass FIR filter.
             #taps = firwin(N, cutoff_hz/nyq_rate, window=('kaiser', beta))
 
             # Use lfilter to filter x with the FIR filter.
-            filtered_x = lfilter(taps, 1.0, live_numbers)
+            #filtered_x = lfilter(taps, 1.0, live_numbers)
 
-            N = filtered_x
+            N = live_numbers
             Frequency_Sampling = frequencyText.get(1.0,END)
             T = int(Frequency_Sampling)/2 # Frequency sample
             x = T * np.linspace(-1,1, N.size, endpoint=False)
@@ -178,12 +199,12 @@ def run():
             #print(y)
             for index, item in enumerate(x):
                 #print(item)
-                if(item > 72000.0): #and item < 74000):
+                if(item > 72000.0 and item < 73500):
                     #print(y[index])
-                    if(y[index] > 50000.0):
+                    if(y[index] > 60000.0):
                         play()
                         #print(y[index])
-            live_numbers = np.delete(live_numbers,np.s_[0::5000])
+            live_numbers = np.delete(live_numbers,np.s_[0::1024])
             
             #count += 1
             #threading.Thread(target=beep(live_numbers)).start()
@@ -287,7 +308,7 @@ def graph():
 
     Frequency_Sampling = frequencyText.get(1.0,END)
     #N = filtered_x # Samples
-    N = graph_numbers
+    N = new_graph
     T = int(Frequency_Sampling)/2 # Frequency sample
 
     yf = abs(fft(N))
@@ -340,10 +361,10 @@ def beep(graph_numbers):
 
     for index, item in enumerate(x):
         if(item > 72000 and item < 74000):
-            if(y[index] > 60000):
+            if(y[index] > 70000):
                 play()
                 
-                live_numbers = np.empty(300)
+                #live_numbers = np.empty()
                 #print(count)
     
 
