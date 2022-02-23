@@ -175,7 +175,7 @@ def run():
         graph_numbers = np.append(graph_numbers,ADC)
         live_numbers = np.append(live_numbers,ADC)
         new_graph = np.append(new_graph,ADC)
-        if (live_numbers.size == 1024):
+        if (live_numbers.size == 512):
 
                         #Filtro FIR passa baixa
             #------------------------------------------------
@@ -204,7 +204,7 @@ def run():
                     if(y[index] > 60000.0):
                         play()
                         #print(y[index])
-            live_numbers = np.delete(live_numbers,np.s_[0::1024])
+            live_numbers = np.delete(live_numbers,np.s_[0::512])
             
             #count += 1
             #threading.Thread(target=beep(live_numbers)).start()
@@ -235,7 +235,7 @@ dropFrequency.config(width=11,pady=0.1)
 dropFrequency.place(relx=0.46,rely=0.01)
 
 # Drop Down Box of Baud Rate
-portlist = ["4800","9600","19200","57600","115200","230400","576000","905000"]
+portlist = ["4800","9600","19200","57600","115200","230400","576000","905000","2000000"]
 portClicked = StringVar()
 portClicked.set("Choose Baud Rate")
 portFrequency = OptionMenu(root,portClicked,*portlist)
