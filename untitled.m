@@ -17,7 +17,7 @@ x(1,:) = []
 
 l = abs(fft(y))
 l(1,:) = []
-f = 170e3/2*linspace(-1, 1, length(l));
+f = 150e3/2*linspace(-1, 1, length(l));
 
 
 %x(1,:) =[]
